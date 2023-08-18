@@ -1,0 +1,18 @@
+package com.capstone.demo.model.dto.response;
+
+import com.capstone.demo.model.domain.Comment;
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
+public class CommentResponseDto {
+
+    private String content;
+
+    public static CommentResponseDto of(Comment comment){
+        return CommentResponseDto.builder()
+                .content(comment.getContent())
+                .build();
+    }
+}
