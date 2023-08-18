@@ -1,11 +1,13 @@
 package com.capstone.demo.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -23,7 +25,11 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)
-    private String name;
-
-
+    private String username;
+    @OneToMany(mappedBy = "author")
+    private List<Question> questions;
+    @OneToMany(mappedBy = "author")
+    private List<Answer> answers;
+    @OneToMany(mappedBy = "author")
+    private List<Comment> comments;
 }
