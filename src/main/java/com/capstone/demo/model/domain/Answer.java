@@ -1,5 +1,7 @@
 package com.capstone.demo.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,6 +29,8 @@ public class Answer extends BaseTimeEntity {
     private Question question;
     @Column(nullable = false)
     private String content;
+    @OneToMany(mappedBy = "answer")
+    private List<Comment> comments;
     @OneToMany(mappedBy = "answer")
     private List<Vote> votes;
 }

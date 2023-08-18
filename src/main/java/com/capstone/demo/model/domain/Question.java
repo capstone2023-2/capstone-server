@@ -1,5 +1,6 @@
 package com.capstone.demo.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +27,7 @@ public class Question extends BaseTimeEntity {
     private String title;
     @Column(nullable = false)
     private String content;
-    private Long views;
+    private int views;
     @OneToMany(mappedBy = "question")
     private List<Answer> answers;
     @OneToMany(mappedBy = "question")
