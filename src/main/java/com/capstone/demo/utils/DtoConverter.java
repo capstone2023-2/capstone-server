@@ -31,7 +31,9 @@ public class DtoConverter {
     public static List<CommentResponseDto> convertCommentsToResponseDto(List<Comment> comments){
 
         List<CommentResponseDto> result = new ArrayList<>();
-        for(Comment e: comments) result.add(CommentResponseDto.of(e));
+        for(Comment e: comments){
+            result.add(CommentResponseDto.of(e));
+        }
 
         return result;
     }

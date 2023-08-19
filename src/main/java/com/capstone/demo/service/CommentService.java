@@ -24,25 +24,37 @@ public class CommentService {
     private final QuestionService questionService;
     private final AnswerService answerService;
 
-    public CommentResponseDto createComment(CommentRequestDto commentRequestDto){
+    public CommentResponseDto createAnswerComment(CommentRequestDto.AnswerRequest answerRequest){
 
-        User findUser = userService.findById(commentRequestDto.getUserId());
-        Question findQuestion = questionService.findById(commentRequestDto.getQuestionId());
-        Answer findAnswer = commentRequestDto.getAnswerId() != null ?
-                answerService.findById(commentRequestDto.getAnswerId()) : null;
-
+        User findUser = userService.findById(answerRequest.getUserId());
+        Answer findAnswer = answerService.findById(answerRequest.getAnswerId());
 
         Comment comment = Comment.builder()
                 .author(findUser)
+                .content(answerRequest.getContent())
+                .answer(findAnswer)
+                .build();
+
+        findUser.getComments().add(comment);
+        findAnswer.getComments().add(comment);
+        commentRepository.save(comment);
+
+        return CommentResponseDto.of(comment);
+    }
+
+    public CommentResponseDto createQuestionComment(CommentRequestDto.QuestionRequest questionRequest){
+
+        User findUser = userService.findById(questionRequest.getUserId());
+        Question findQuestion = questionService.findById(questionRequest.getQuestionId());
+
+        Comment comment = Comment.builder()
+                .author(findUser)
+                .content(questionRequest.getContent())
                 .question(findQuestion)
-                .content(commentRequestDto.getContent())
-                .answer(commentRequestDto.getAnswerId() != null ?
-                        findAnswer : null)
                 .build();
 
         findUser.getComments().add(comment);
         findQuestion.getComments().add(comment);
-        if(findAnswer!=null)    findAnswer.getComments().add(comment);
         commentRepository.save(comment);
 
         return CommentResponseDto.of(comment);

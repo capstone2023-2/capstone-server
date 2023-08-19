@@ -20,17 +20,24 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping
-    public ResponseEntity<BaseResponseDto> createComment(@RequestBody CommentRequestDto commentRequestDto){
+    public ResponseEntity<BaseResponseDto> createComment(@RequestBody CommentRequestDto commentRequestDto) {
 
-        return new ResponseEntity<>(
-                new BaseResponseDto(
-                        HttpStatus.CREATED.value(),
-                        "comment successfully created!",
-                        commentService.createComment(commentRequestDto)), HttpStatus.CREATED);
+        if (commentRequestDto.getAnswerId() != null)
+            return new ResponseEntity<>(
+                    new BaseResponseDto(
+                            HttpStatus.CREATED.value(),
+                            "comment to answer successfully created!",
+                            commentService.createAnswerComment(CommentRequestDto.AnswerRequest.of(commentRequestDto))), HttpStatus.CREATED);
+        else
+            return new ResponseEntity<>(
+                    new BaseResponseDto(
+                            HttpStatus.CREATED.value(),
+                            "comment to question successfully created!",
+                            commentService.createQuestionComment(CommentRequestDto.QuestionRequest.of(commentRequestDto))), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<BaseResponseDto> getAnswers(){
+    public ResponseEntity<BaseResponseDto> getAnswers() {
 
         return new ResponseEntity<>(
                 new BaseResponseDto(

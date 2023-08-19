@@ -9,10 +9,12 @@ import lombok.Getter;
 public class CommentResponseDto {
 
     private String content;
+    private Long authorId;
 
     public static CommentResponseDto of(Comment comment){
         return CommentResponseDto.builder()
                 .content(comment.getContent())
+                .authorId(comment.getAuthor().getUserId())
                 .build();
     }
 }
