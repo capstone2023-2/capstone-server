@@ -1,6 +1,5 @@
 package com.capstone.demo.model.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -22,8 +21,8 @@ public class Vote extends BaseTimeEntity {
     @JoinColumn(name = "voter_id")
     private User voter;
     @ManyToOne
-    @JoinColumn(name = "question_id")
-    private Question question;
+    @JoinColumn(name = "post_id")
+    private Post post;
     @ManyToOne
     @JoinColumn(name = "answer_id")
     private Answer answer;

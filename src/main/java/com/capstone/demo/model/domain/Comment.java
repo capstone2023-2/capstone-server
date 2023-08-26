@@ -24,8 +24,8 @@ public class Comment extends BaseTimeEntity {
     @Column(nullable = false)
     private String content;
     @ManyToOne
-    @JoinColumn(name = "question_id")
-    private Question question;
+    @JoinColumn(name = "post_id")
+    private Post post;
     @ManyToOne
     @JoinColumn(name = "answer_id")
     private Answer answer;
