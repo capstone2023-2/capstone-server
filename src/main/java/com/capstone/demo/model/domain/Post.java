@@ -1,6 +1,5 @@
 package com.capstone.demo.model.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,28 +9,31 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "questions")
+@Table(name = "posts")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Question extends BaseTimeEntity {
+public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long questionId;
-    @ManyToOne
+    private Long postId;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private User author;
+    @ManyToOne
+    @JoinColumn(name = "thread_id", nullable = false)
+    private Thread thread;
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
     private String content;
     private int views;
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "post")
     private List<Answer> answers;
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "post")
     private List<Comment> comments;
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "post")
     private List<Vote> votes;
 }

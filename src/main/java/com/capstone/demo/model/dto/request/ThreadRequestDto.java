@@ -3,9 +3,9 @@ package com.capstone.demo.model.dto.request;
 import lombok.Getter;
 
 @Getter
-public class QuestionRequestDto {
+public class ThreadRequestDto {
 
-    private String title;
-    private String content;
+    private String name;
+    private String description;
     private Long userId;
 }
