@@ -10,7 +10,7 @@ public class CommentRequestDto {
 
     private String content;
     private Long userId;
-    private Long questionId;
+    private Long postId;
     private Long answerId;
 
     @Getter
@@ -34,13 +34,13 @@ public class CommentRequestDto {
     public static class QuestionRequest{
         private String content;
         private Long userId;
-        private Long questionId;
+        private Long postId;
 
         public static CommentRequestDto.QuestionRequest of(CommentRequestDto commentRequestDto){
             return QuestionRequest.builder()
                     .content(commentRequestDto.getContent())
                     .userId(commentRequestDto.getUserId())
-                    .questionId(commentRequestDto.getQuestionId())
+                    .postId(commentRequestDto.getPostId())
                     .build();
         }
     }

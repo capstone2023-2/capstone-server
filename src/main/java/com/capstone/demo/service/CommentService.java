@@ -2,7 +2,7 @@ package com.capstone.demo.service;
 
 import com.capstone.demo.model.domain.Answer;
 import com.capstone.demo.model.domain.Comment;
-import com.capstone.demo.model.domain.Question;
+import com.capstone.demo.model.domain.Post;
 import com.capstone.demo.model.domain.User;
 import com.capstone.demo.model.dto.request.CommentRequestDto;
 import com.capstone.demo.model.dto.response.CommentResponseDto;
@@ -21,7 +21,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final UserService userService;
-    private final QuestionService questionService;
+    private final PostService postService;
     private final AnswerService answerService;
 
     public CommentResponseDto createAnswerComment(CommentRequestDto.AnswerRequest answerRequest){
@@ -42,19 +42,19 @@ public class CommentService {
         return CommentResponseDto.of(comment);
     }
 
-    public CommentResponseDto createQuestionComment(CommentRequestDto.QuestionRequest questionRequest){
+    public CommentResponseDto createPostComment(CommentRequestDto.QuestionRequest questionRequest){
 
         User findUser = userService.findById(questionRequest.getUserId());
-        Question findQuestion = questionService.findById(questionRequest.getQuestionId());
+        Post findPost = postService.findById(questionRequest.getPostId());
 
         Comment comment = Comment.builder()
                 .author(findUser)
                 .content(questionRequest.getContent())
-                .question(findQuestion)
+                .post(findPost)
                 .build();
 
         findUser.getComments().add(comment);
-        findQuestion.getComments().add(comment);
+        findPost.getComments().add(comment);
         commentRepository.save(comment);
 
         return CommentResponseDto.of(comment);

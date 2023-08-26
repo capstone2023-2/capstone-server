@@ -1,6 +1,5 @@
 package com.capstone.demo.model.dto.response;
 
-import com.capstone.demo.model.domain.Question;
 import com.capstone.demo.model.domain.User;
 import com.capstone.demo.utils.DtoConverter;
 import lombok.Builder;
@@ -14,7 +13,7 @@ public class UserResponseDto {
 
     private String email;
     private String username;
-    private List<QuestionResponseDto> questions;
+    private List<PostResponseDto> questions;
     private List<AnswerResponseDto> answers;
     private List<CommentResponseDto> comments;
 
@@ -22,7 +21,7 @@ public class UserResponseDto {
         return UserResponseDto.builder()
                 .email(user.getEmail())
                 .username(user.getUsername())
-                .questions(DtoConverter.convertQuestionsToResponseDto(user.getQuestions()))
+                .questions(DtoConverter.convertPostsToResponseDto(user.getPosts()))
                 .answers(DtoConverter.convertAnswersToResponseDto(user.getAnswers()))
                 .comments(DtoConverter.convertCommentsToResponseDto(user.getComments()))
                 .build();

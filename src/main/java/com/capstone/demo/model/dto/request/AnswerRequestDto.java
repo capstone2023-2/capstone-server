@@ -7,5 +7,5 @@ public class AnswerRequestDto {
 
     private String content;
     private Long userId;
-    private Long questionId;
+    private Long postId;
 }

@@ -24,7 +24,7 @@ public class UserService {
                 .email(userRegisterDto.getEmail())
                 .password(userRegisterDto.getPassword())
                 .username(userRegisterDto.getUsername())
-                .questions(new ArrayList<>())
+                .posts(new ArrayList<>())
                 .answers(new ArrayList<>())
                 .comments(new ArrayList<>())
                 .build()));

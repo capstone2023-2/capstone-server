@@ -1,7 +1,7 @@
 package com.capstone.demo.service;
 
 import com.capstone.demo.model.domain.Answer;
-import com.capstone.demo.model.domain.Question;
+import com.capstone.demo.model.domain.Post;
 import com.capstone.demo.model.domain.User;
 import com.capstone.demo.model.dto.request.AnswerRequestDto;
 import com.capstone.demo.model.dto.response.AnswerResponseDto;
@@ -20,22 +20,22 @@ public class AnswerService {
 
     private final AnswerRepository answerRepository;
     private final UserService userService;
-    private final QuestionService questionService;
+    private final PostService postService;
 
     public AnswerResponseDto createAnswer(AnswerRequestDto answerRequestDto){
 
         User findUser = userService.findById(answerRequestDto.getUserId());
-        Question findQuestion = questionService.findById(answerRequestDto.getQuestionId());
+        Post findPost = postService.findById(answerRequestDto.getPostId());
 
         Answer answer = Answer.builder()
                 .author(findUser)
                 .content(answerRequestDto.getContent())
-                .question(findQuestion)
+                .post(findPost)
                 .comments(new ArrayList<>())
                 .build();
 
         findUser.getAnswers().add(answer);
-        findQuestion.getAnswers().add(answer);
+        findPost.getAnswers().add(answer);
         answerRepository.save(answer);
 
         return AnswerResponseDto.of(answer);
