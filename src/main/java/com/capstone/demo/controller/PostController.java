@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/questions")
+@RequestMapping("/posts")
 public class PostController {
 
     private final PostService postService;
@@ -21,7 +21,7 @@ public class PostController {
         return new ResponseEntity<>(
                 new BaseResponseDto(
                         HttpStatus.CREATED.value(),
-                        "question successfully registered!",
+                        "post successfully registered!",
                         postService.createPost(postRequestDto)), HttpStatus.CREATED);
     }
 
@@ -31,7 +31,17 @@ public class PostController {
         return new ResponseEntity<>(
                 new BaseResponseDto(
                         HttpStatus.OK.value(),
-                        "all questions data successfully received!",
+                        "all posts data successfully received!",
                         postService.getPosts()), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<BaseResponseDto> deletePostById(@PathVariable Long id) {
+
+        return new ResponseEntity<>(
+                new BaseResponseDto(
+                        HttpStatus.OK.value(),
+                        "post successfully deleted",
+                        postService.deletePost(id)), HttpStatus.OK);
     }
 }
