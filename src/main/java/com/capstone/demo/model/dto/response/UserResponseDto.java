@@ -13,17 +13,17 @@ public class UserResponseDto {
 
     private String email;
     private String username;
-    private List<PostResponseDto> questions;
-    private List<AnswerResponseDto> answers;
+    private List<PostResponseDto> posts;
     private List<CommentResponseDto> comments;
+    private List<CollectionResponseDto> collections;
 
     public static UserResponseDto of(User user){
         return UserResponseDto.builder()
                 .email(user.getEmail())
                 .username(user.getUsername())
-                .questions(DtoConverter.convertPostsToResponseDto(user.getPosts()))
-                .answers(DtoConverter.convertAnswersToResponseDto(user.getAnswers()))
+                .posts(DtoConverter.convertPostsToResponseDto(user.getPosts()))
                 .comments(DtoConverter.convertCommentsToResponseDto(user.getComments()))
+                .collections(DtoConverter.convertCollectionsToResponseDto(user.getCollections()))
                 .build();
     }
 

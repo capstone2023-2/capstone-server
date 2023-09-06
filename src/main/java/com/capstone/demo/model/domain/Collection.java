@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "collections")
@@ -14,9 +15,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Collection {
+public class Collection extends BaseTimeEntity {
 
     @Id
+    @Column(name = "collection_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long collectionId;
     @ManyToOne
@@ -24,6 +26,11 @@ public class Collection {
     private User author;
     @Column(nullable = false)
     private String name;
-    @OneToMany(mappedBy = "collection")
+    @ManyToMany
+    @JoinTable(
+            name = "collection_thread",
+            joinColumns = @JoinColumn(name = "collection_id"),
+            inverseJoinColumns = @JoinColumn(name = "thread_id")
+    )
     private List<Thread> threads;
 }
