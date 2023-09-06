@@ -34,4 +34,14 @@ public class ThreadController {
                         "all threads data successfully received!",
                         threadService.getThreads()), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<BaseResponseDto> deleteThreadById(@PathVariable Long id) {
+
+        return new ResponseEntity<>(
+                new BaseResponseDto(
+                        HttpStatus.OK.value(),
+                        "thread successfully deleted",
+                        threadService.deleteThread(id)), HttpStatus.OK);
+    }
 }
