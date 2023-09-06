@@ -30,10 +30,8 @@ public class Post extends BaseTimeEntity {
     @Column(nullable = false)
     private String content;
     private int views;
-    @OneToMany(mappedBy = "post")
-    private List<Answer> answers;
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Comment> comments;
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Vote> votes;
 }
