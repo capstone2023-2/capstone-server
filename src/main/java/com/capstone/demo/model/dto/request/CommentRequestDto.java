@@ -11,37 +11,4 @@ public class CommentRequestDto {
     private String content;
     private Long userId;
     private Long postId;
-    private Long answerId;
-
-    @Getter
-    @Builder
-    public static class AnswerRequest{
-        private String content;
-        private Long userId;
-        private Long answerId;
-
-        public static CommentRequestDto.AnswerRequest of(CommentRequestDto commentRequestDto){
-            return AnswerRequest.builder()
-                    .content(commentRequestDto.getContent())
-                    .userId(commentRequestDto.getUserId())
-                    .answerId(commentRequestDto.getAnswerId())
-                    .build();
-        }
-    }
-
-    @Getter
-    @Builder
-    public static class QuestionRequest{
-        private String content;
-        private Long userId;
-        private Long postId;
-
-        public static CommentRequestDto.QuestionRequest of(CommentRequestDto commentRequestDto){
-            return QuestionRequest.builder()
-                    .content(commentRequestDto.getContent())
-                    .userId(commentRequestDto.getUserId())
-                    .postId(commentRequestDto.getPostId())
-                    .build();
-        }
-    }
 }

@@ -18,18 +18,11 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<BaseResponseDto> createComment(@RequestBody CommentRequestDto commentRequestDto) {
 
-        if (commentRequestDto.getAnswerId() != null)
-            return new ResponseEntity<>(
-                    new BaseResponseDto(
-                            HttpStatus.CREATED.value(),
-                            "comment to answer successfully created!",
-                            commentService.createAnswerComment(CommentRequestDto.AnswerRequest.of(commentRequestDto))), HttpStatus.CREATED);
-        else
-            return new ResponseEntity<>(
-                    new BaseResponseDto(
-                            HttpStatus.CREATED.value(),
-                            "comment to question successfully created!",
-                            commentService.createPostComment(CommentRequestDto.QuestionRequest.of(commentRequestDto))), HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                new BaseResponseDto(
+                        HttpStatus.CREATED.value(),
+                        "comment successfully created!",
+                        commentService.createComment(commentRequestDto)), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -40,5 +33,15 @@ public class CommentController {
                         HttpStatus.OK.value(),
                         "all comments data successfully received!",
                         commentService.getComments()), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<BaseResponseDto> deleteCommentById(@PathVariable Long id) {
+
+        return new ResponseEntity<>(
+                new BaseResponseDto(
+                        HttpStatus.OK.value(),
+                        "comment successfully deleted",
+                        commentService.deleteComment(id)), HttpStatus.OK);
     }
 }
