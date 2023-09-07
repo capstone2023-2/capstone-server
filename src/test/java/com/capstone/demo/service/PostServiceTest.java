@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,7 +46,6 @@ class PostServiceTest {
                 .password("pw")
                 .username("flash")
                 .posts(new ArrayList<>())
-                .answers(new ArrayList<>())
                 .comments(new ArrayList<>())
                 .threads(new ArrayList<>())
                 .collections(new ArrayList<>())
@@ -58,7 +56,6 @@ class PostServiceTest {
                 .author(user)
                 .name("thread1")
                 .description("test 스레드입니다")
-                .collection(null)
                 .posts(new ArrayList<>())
                 .build();
 
@@ -71,7 +68,6 @@ class PostServiceTest {
                 .title("tmp Post")
                 .content("테스트용 임시 포스트입니다")
                 .views(3)
-                .answers(new ArrayList<>())
                 .comments(new ArrayList<>())
                 .votes(new ArrayList<>())
                 .build();
@@ -87,10 +83,6 @@ class PostServiceTest {
                 .build();
     }
 
-    /*
-    * 등록된 유저와 등록된 스레드가 존재하는 상황
-    * 등록된 유저와 스레드에는 이미 한 개의 Post 가 추가돼있는 상황
-    * */
     @Test
     @DisplayName("Post를 새로 생성할 때 User와 Thread의 List<Post> 에도 제대로 추가되는지")
     void createPost() {
@@ -105,7 +97,6 @@ class PostServiceTest {
         PostResponseDto responseDto = postService.createPost(requestDto);
 
         //then
-        assertNotNull(responseDto);
         assertThat(responseDto.getTitle()).isEqualTo(requestDto.getTitle());
         assertThat(responseDto.getContent()).isEqualTo(requestDto.getContent());
 
@@ -119,8 +110,6 @@ class PostServiceTest {
 
         // given
         Long postId = 1L;
-
-        // Configure the mock repository's behavior
         given(postRepository.findById(postId)).willReturn(Optional.of(alreadyAddedPost));
         given(userService.findById(alreadyAddedPost.getAuthor().getUserId())).willReturn(user);
         given(threadService.findById(alreadyAddedPost.getThread().getThreadId())).willReturn(thread);
@@ -131,6 +120,5 @@ class PostServiceTest {
         // then
         assertThat(user.getPosts()).isEmpty();
         assertThat(thread.getPosts()).isEmpty();
-
     }
 }
