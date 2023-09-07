@@ -14,7 +14,6 @@ public class PostResponseDto {
     private String title;
     private String content;
     private int views;
-    private List<AnswerResponseDto> answers;
     private List<CommentResponseDto> comments;
 
     public static PostResponseDto of(Post post){
@@ -22,7 +21,6 @@ public class PostResponseDto {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .views(post.getViews())
-                .answers(DtoConverter.convertAnswersToResponseDto(post.getAnswers()))
                 .comments(DtoConverter.convertCommentsToResponseDto(post.getComments()))
                 .build();
     }

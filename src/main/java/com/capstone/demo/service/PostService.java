@@ -33,7 +33,6 @@ public class PostService {
                 .title(postRequestDto.getTitle())
                 .content(postRequestDto.getContent())
                 .views(0)
-                .answers(new ArrayList<>())
                 .comments(new ArrayList<>())
                 .votes(new ArrayList<>())
                 .build();
@@ -55,7 +54,7 @@ public class PostService {
         return dtoList;
     }
 
-    public void deletePost(Long postId){
+    public Boolean deletePost(Long postId){
 
         Post findPost = this.findById(postId);
         User findUser = userService.findById(findPost.getAuthor().getUserId());
@@ -64,6 +63,8 @@ public class PostService {
         findUser.getPosts().remove(findPost);
         findThread.getPosts().remove(findPost);
         postRepository.delete(findPost);
+
+        return true;
     }
 
     public Post findById(Long postId){
