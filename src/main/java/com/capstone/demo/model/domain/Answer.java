@@ -9,21 +9,26 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "collections")
+@Table(name = "answers")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Collection {
+public class Answer extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long collectionId;
+    private Long answerId;
     @ManyToOne
     @JoinColumn(name = "author_id")
     private User author;
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
     @Column(nullable = false)
-    private String name;
-    @OneToMany(mappedBy = "collection")
-    private List<Thread> threads;
+    private String content;
+    @OneToMany(mappedBy = "answer")
+    private List<Comment> comments;
+    @OneToMany(mappedBy = "answer")
+    private List<Vote> votes;
 }

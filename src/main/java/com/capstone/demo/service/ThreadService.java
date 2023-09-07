@@ -8,7 +8,10 @@ import com.capstone.demo.repository.ThreadRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,17 +45,6 @@ public class ThreadService {
         for(Thread e: entityList) dtoList.add(ThreadResponseDto.of(e));
 
         return dtoList;
-    }
-
-    public Boolean deleteThread(Long threadId){
-
-        Thread findThread = this.findById(threadId);
-        User findUser = userService.findById(findThread.getAuthor().getUserId());
-
-        findUser.getThreads().remove(findThread);
-        threadRepository.delete(findThread);
-
-        return true;
     }
 
     public Thread findById(Long threadId){

@@ -25,8 +25,8 @@ public class UserService {
                 .password(userRegisterDto.getPassword())
                 .username(userRegisterDto.getUsername())
                 .posts(new ArrayList<>())
+                .answers(new ArrayList<>())
                 .comments(new ArrayList<>())
-                .collections(new ArrayList<>())
                 .build()));
     }
 
@@ -40,7 +40,7 @@ public class UserService {
         return dtoList;
     }
 
-    public User findById(Long userId) {
+    public User findById(Long userId){
         Optional<User> optionalUser = userRepository.findById(userId);
         return optionalUser.orElseThrow(() -> new NoSuchElementException("no such user with the id"));
     }

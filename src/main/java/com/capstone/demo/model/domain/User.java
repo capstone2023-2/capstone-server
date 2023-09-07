@@ -19,7 +19,7 @@ public class User extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
     private String password;
@@ -28,11 +28,11 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "author")
     private List<Post> posts;
     @OneToMany(mappedBy = "author")
+    private List<Answer> answers;
+    @OneToMany(mappedBy = "author")
     private List<Comment> comments;
-    @OneToMany(mappedBy = "voter")
-    private List<Vote> votes;
     @OneToMany(mappedBy = "author")
     private List<Thread> threads;
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author")
     private List<Collection> collections;
 }

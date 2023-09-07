@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "threads")
@@ -15,10 +14,9 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Thread extends BaseTimeEntity {
+public class Thread {
 
     @Id
-    @Column(name = "thread_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long threadId;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,8 +25,9 @@ public class Thread extends BaseTimeEntity {
     @Column(nullable = false)
     private String name;
     private String description;
-    @OneToMany(mappedBy = "thread", orphanRemoval = true, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "collection_id")
+    private Collection collection;
+    @OneToMany(mappedBy = "thread", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Post> posts;
-    @ManyToMany(mappedBy = "threads")
-    private List<Collection> collections;
 }

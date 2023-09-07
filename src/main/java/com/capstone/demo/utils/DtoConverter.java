@@ -1,13 +1,11 @@
 package com.capstone.demo.utils;
 
-import com.capstone.demo.model.domain.Collection;
+import com.capstone.demo.model.domain.Answer;
 import com.capstone.demo.model.domain.Comment;
 import com.capstone.demo.model.domain.Post;
-import com.capstone.demo.model.domain.Thread;
-import com.capstone.demo.model.dto.response.CollectionResponseDto;
+import com.capstone.demo.model.dto.response.AnswerResponseDto;
 import com.capstone.demo.model.dto.response.CommentResponseDto;
 import com.capstone.demo.model.dto.response.PostResponseDto;
-import com.capstone.demo.model.dto.response.ThreadResponseDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,31 +20,19 @@ public class DtoConverter {
         return result;
     }
 
+    public static List<AnswerResponseDto> convertAnswersToResponseDto(List<Answer> answers) {
+
+        List<AnswerResponseDto> result = new ArrayList<>();
+        for(Answer e: answers) result.add(AnswerResponseDto.of(e));
+
+        return result;
+    }
+
     public static List<CommentResponseDto> convertCommentsToResponseDto(List<Comment> comments){
 
         List<CommentResponseDto> result = new ArrayList<>();
         for(Comment e: comments){
             result.add(CommentResponseDto.of(e));
-        }
-
-        return result;
-    }
-
-    public static List<ThreadResponseDto> convertThreadsToResponseDto(List<Thread> threads) {
-
-        List<ThreadResponseDto> result = new ArrayList<>();
-        for(Thread e: threads){
-            result.add(ThreadResponseDto.of(e));
-        }
-
-        return result;
-    }
-
-    public static List<CollectionResponseDto> convertCollectionsToResponseDto(List<Collection> collections){
-
-        List<CollectionResponseDto> result = new ArrayList<>();
-        for(Collection e: collections){
-            result.add(CollectionResponseDto.of(e));
         }
 
         return result;

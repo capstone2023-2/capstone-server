@@ -23,6 +23,9 @@ public class Vote extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+    @ManyToOne
+    @JoinColumn(name = "answer_id")
+    private Answer answer;
     @Column(nullable = false)
     @Range(min = -1, max = 1)
     private int upOrDown;
