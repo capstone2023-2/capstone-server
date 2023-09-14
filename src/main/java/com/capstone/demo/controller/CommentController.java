@@ -10,38 +10,39 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/comments")
 public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping
-    public ResponseEntity<BaseResponseDto> createComment(@RequestBody CommentRequestDto commentRequestDto) {
+    @PostMapping("/posts/{post-id}/comments")
+    public ResponseEntity<BaseResponseDto> createComment(@RequestBody CommentRequestDto commentRequestDto,
+                                                         @PathVariable("post-id") Long postId) {
 
         return new ResponseEntity<>(
                 new BaseResponseDto(
                         HttpStatus.CREATED.value(),
                         "comment successfully created!",
-                        commentService.createComment(commentRequestDto)), HttpStatus.CREATED);
+                        commentService.createComment(commentRequestDto, postId)), HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public ResponseEntity<BaseResponseDto> getAnswers() {
+    @GetMapping("/posts/{post-id}/comments")
+    public ResponseEntity<BaseResponseDto> getCommentsOfPost(@PathVariable("post-id") Long postId) {
 
         return new ResponseEntity<>(
                 new BaseResponseDto(
                         HttpStatus.OK.value(),
                         "all comments data successfully received!",
-                        commentService.getComments()), HttpStatus.OK);
+                        commentService.getCommentsOfPost(postId)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<BaseResponseDto> deleteCommentById(@PathVariable Long id) {
+    @DeleteMapping("/posts/{post-id}/comments/{comment-id}")
+    public ResponseEntity<BaseResponseDto> deleteCommentById(@PathVariable("post-id") Long postId,
+                                                             @PathVariable("comment-id") Long commentId) {
 
         return new ResponseEntity<>(
                 new BaseResponseDto(
                         HttpStatus.OK.value(),
                         "comment successfully deleted",
-                        commentService.deleteComment(id)), HttpStatus.OK);
+                        commentService.deleteComment(postId, commentId)), HttpStatus.OK);
     }
 }
