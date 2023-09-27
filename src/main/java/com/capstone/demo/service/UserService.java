@@ -22,7 +22,6 @@ public class UserService {
 
         return UserResponseDto.of(userRepository.save(User.builder()
                 .email(userRegisterDto.getEmail())
-                .password(userRegisterDto.getPassword())
                 .username(userRegisterDto.getUsername())
                 .posts(new ArrayList<>())
                 .comments(new ArrayList<>())
