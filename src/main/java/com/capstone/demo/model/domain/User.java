@@ -21,6 +21,8 @@ public class User extends BaseTimeEntity {
     private String email;
     @Column(nullable = false)
     private String username;
+    @Column(nullable = false)
+    private String password;
     @OneToMany(mappedBy = "author")
     private List<Post> posts;
     @OneToMany(mappedBy = "author")
@@ -34,49 +36,29 @@ public class User extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    @Column
-    private String provider;
-    @Column
-    private String providerId;
 
     @Builder
-    private User(String username, String email, List<Post> posts, List<Comment> comments,
-                 List<Vote> votes, List<Thread> threads, List<Collection> collections,
-                 String provider, String providerId) {
+    private User(String username, String email, String password, List<Post> posts, List<Comment> comments,
+                 List<Vote> votes, List<Thread> threads, List<Collection> collections) {
         this.username = username;
         this.email = email;
+        this.password = password;
         this.posts = posts;
         this.comments = comments;
         this.votes = votes;
         this.threads = threads;
         this.collections = collections;
         this.role = UserRole.USER;
-        this.provider = provider;
-        this.providerId = providerId;
     }
 
-    public static User of(String username, String email, String provider, String providerId) {
+    public static User of(String username, String email) {
 
         return User.builder()
                 .username(username)
                 .email(email)
-                .provider(provider)
-                .providerId(providerId)
                 .build();
     }
 
-    public void updateProvider(String provider) {
-
-        this.provider = provider;
-    }
-
-    public User updateUsernameAndEmail(String username, String email){
-
-        this.username = username;
-        this.email = email;
-
-        return this;
-    }
 
     public String getRoleValue() {
 
