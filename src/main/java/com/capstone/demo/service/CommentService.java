@@ -22,10 +22,10 @@ public class CommentService {
     private final UserService userService;
     private final PostService postService;
 
-    public CommentResponseDto createComment(CommentRequestDto commentRequestDto){
+    public CommentResponseDto createComment(CommentRequestDto commentRequestDto, Long postId){
 
         User findUser = userService.findById(commentRequestDto.getUserId());
-        Post findPost = postService.findById(commentRequestDto.getPostId());
+        Post findPost = postService.findById(postId);
 
         Comment comment = Comment.builder()
                 .author(findUser)
@@ -40,20 +40,20 @@ public class CommentService {
         return CommentResponseDto.of(comment);
     }
 
-    public List<CommentResponseDto> getComments(){
+    public List<CommentResponseDto> getCommentsOfPost(Long postId){
 
-        List<Comment> entityList = commentRepository.findAll();
+        Post findPost = postService.findById(postId);
         List<CommentResponseDto> dtoList = new ArrayList<>();
 
-        for(Comment e: entityList) dtoList.add(CommentResponseDto.of(e));
+        for(Comment e: findPost.getComments()) dtoList.add(CommentResponseDto.of(e));
 
         return dtoList;
     }
 
-    public Boolean deleteComment(Long commentId){
+    public Boolean deleteComment(Long postId, Long commentId){
 
+        Post findPost = postService.findById(postId);
         Comment findComment = this.findById(commentId);
-        Post findPost = postService.findById(findComment.getPost().getPostId());
 
         findPost.getComments().remove(findComment);
         commentRepository.delete(findComment);
