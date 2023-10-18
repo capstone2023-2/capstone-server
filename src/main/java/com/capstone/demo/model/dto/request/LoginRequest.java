@@ -3,9 +3,8 @@ package com.capstone.demo.model.dto.request;
 import lombok.Getter;
 
 @Getter
-public class UserRegisterDto {
+public class LoginRequest {
 
     private String email;
     private String password;
-    private String username;
 }
