@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionManager {
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<?> appExceptionHandler(AppException e){
-        return ResponseEntity.status(e.getErrorCode().getHttpStatus())
-                .body(e.getErrorCode().name() + " " + e.getMessage());
+    public ResponseEntity<?> appExceptionHandler(RuntimeException e){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("An error occurred: " + e.getMessage());
     }
+
 }

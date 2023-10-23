@@ -4,10 +4,12 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 
+@Slf4j
 public class JwtUtil {
 
     private static final SecretKey secret = Keys.hmacShaKeyFor(Keys.secretKeyFor(SignatureAlgorithm.HS256).getEncoded());
@@ -18,6 +20,7 @@ public class JwtUtil {
     }
 
     public static boolean isExpired(String token){
+        log.info("front에서 받은 token: {}", token);
         return Jwts.parserBuilder().setSigningKey(JwtUtil.getSecret()).build()
                 .parseClaimsJws(token).getBody().getExpiration().before(new Date());
     }

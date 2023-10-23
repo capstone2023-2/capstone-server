@@ -16,7 +16,7 @@ public class VoteController {
 
     private final VoteService voteService;
 
-    @Operation(summary = "포스트 투표", description = "특정 포스트에 대해 1 또는 -1로 투표합니다.")
+//    @Operation(summary = "포스트 투표", description = "특정 포스트에 대해 1 또는 -1로 투표합니다.")
     @PutMapping("/posts/{postId}/votes")
     public ResponseEntity<BaseResponseDto> updateVote(@RequestBody int upOrDown,
                                                       @PathVariable Long postId,

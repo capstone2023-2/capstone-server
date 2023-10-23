@@ -7,5 +7,6 @@ public class UserRegisterDto {
 
     private String email;
     private String password;
+    private String checkPassword;
     private String username;
 }

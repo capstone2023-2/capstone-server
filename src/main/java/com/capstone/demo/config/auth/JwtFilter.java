@@ -19,7 +19,6 @@ import java.util.List;
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
@@ -34,6 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         String token = authorization.split(" ")[1];
+        log.info("token: {}", token);
 
         if(JwtUtil.isExpired(token)){
             log.error("token 이 만료되었습니다.");

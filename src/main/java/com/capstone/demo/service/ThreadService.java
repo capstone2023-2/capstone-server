@@ -6,6 +6,7 @@ import com.capstone.demo.model.dto.request.ThreadRequestDto;
 import com.capstone.demo.model.dto.response.ThreadResponseDto;
 import com.capstone.demo.repository.ThreadRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -17,21 +18,35 @@ public class ThreadService {
     private final ThreadRepository threadRepository;
     private final UserService userService;
 
-    public ThreadResponseDto createThread(ThreadRequestDto threadRequestDto){
+    public ThreadResponseDto addThread(ThreadRequestDto threadRequestDto, String email){
 
-        User findUser = userService.findById(threadRequestDto.getUserId());
+        User user = userService.findByEmail(email);
 
         Thread thread = Thread.builder()
-                .author(findUser)
+                .author(user)
                 .name(threadRequestDto.getName())
                 .description(threadRequestDto.getDescription())
                 .posts(new ArrayList<>())
                 .build();
 
-        findUser.getThreads().add(thread);
+        user.getThreads().add(thread);
         threadRepository.save(thread);
 
         return ThreadResponseDto.of(thread);
+    }
+
+    public ThreadResponseDto getThread(Long id){
+
+        Thread thread = this.findById(id);
+        return ThreadResponseDto.of(thread);
+    }
+
+    public ThreadResponseDto getThread(Long collectionId, Long threadId){
+
+        Thread thread = this.findById(threadId);
+        ThreadResponseDto threadResponseDto = ThreadResponseDto.of(thread);
+        threadResponseDto.setCollectionId(collectionId);
+        return threadResponseDto;
     }
 
     public List<ThreadResponseDto> getThreads(){
@@ -44,13 +59,13 @@ public class ThreadService {
         return dtoList;
     }
 
-    public Boolean deleteThread(Long threadId){
+    public Boolean deleteThread(Long threadId, String email){
 
-        Thread findThread = this.findById(threadId);
-        User findUser = userService.findById(findThread.getAuthor().getUserId());
+        Thread thread = this.findById(threadId);
+        User user = userService.findByEmail(email);
 
-        findUser.getThreads().remove(findThread);
-        threadRepository.delete(findThread);
+        user.getThreads().remove(thread);
+        threadRepository.delete(thread);
 
         return true;
     }
