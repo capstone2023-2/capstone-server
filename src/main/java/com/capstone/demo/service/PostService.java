@@ -1,5 +1,7 @@
 package com.capstone.demo.service;
 
+import com.capstone.demo.exception.AppException;
+import com.capstone.demo.exception.ErrorCode;
 import com.capstone.demo.model.domain.Post;
 import com.capstone.demo.model.domain.Thread;
 import com.capstone.demo.model.domain.User;
@@ -83,15 +85,16 @@ public class PostService {
         User user = userService.findByEmail(email);
         Thread findThread = threadService.findById(post.getThread().getThreadId());
 
-        if(user.getUserId().equals(post.getAuthor().getUserId())){
-            user.getPosts().remove(post);
-            findThread.getPosts().remove(post);
-            bookmarkRepository.deleteAllByPostId(postId);
-            postRepository.delete(post);
-
-            return true;
+        if(!user.getUserId().equals(post.getAuthor().getUserId())){
+            throw new AppException(ErrorCode.UNAUTHORIZED_TRIAL, "작성자만 삭제 가능합니다.");
         }
-        else    return false;
+
+        user.getPosts().remove(post);
+        findThread.getPosts().remove(post);
+        bookmarkRepository.deleteAllByPostId(postId);
+        postRepository.delete(post);
+
+        return true;
     }
 
     public Post findById(Long postId){
