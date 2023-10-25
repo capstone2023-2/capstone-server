@@ -48,6 +48,23 @@ public class CommentController {
                         commentService.createComment(commentRequestDto, postId, authentication.getName())), HttpStatus.CREATED);
     }
 
+    @Operation(summary = "오픈포럼 댓글 작성", description = "오픈포럼 게시글에 댓글 작성", responses = {
+            @ApiResponse(responseCode = "201", description = "오픈포럼 게시글에 댓글 작성 성공",
+                    content = @Content(schema = @Schema(implementation = CommentResponseDto.class)))
+    }, tags = "댓글 기능")
+    @PostMapping("/forums/{forumId}/comments")
+    public ResponseEntity<BaseResponseDto<CommentResponseDto>> createCommentToForum(@RequestBody CommentRequestDto commentRequestDto,
+                                                                                    @PathVariable Long forumId,
+                                                                                    Authentication authentication){
+
+        return new ResponseEntity<>(
+                new BaseResponseDto<CommentResponseDto>(
+                        HttpStatus.CREATED.value(),
+                        "포럼에 댓글 작성 완료",
+                        commentService.createCommentOfForum(commentRequestDto, forumId, authentication.getName())
+                ), HttpStatus.CREATED);
+    }
+
     @Operation(summary = "포스트 댓글 조회", description = "특정 포스트의 모든 댓글을 조회합니다.", responses = {
             @ApiResponse(responseCode = "200", description = "댓글 목록 조회 성공",
                     content =  @Content(array = @ArraySchema(schema = @Schema(implementation = CommentResponseDto.class))))
@@ -62,13 +79,28 @@ public class CommentController {
                         commentService.getCommentsOfPost(postId)), HttpStatus.OK);
     }
 
+    @Operation(summary = "특정 오픈포럼 게시글 댓글 조회", description = "특정 오픈포럼 게시글의 모든 댓글을 조회합니다.", responses = {
+            @ApiResponse(responseCode = "200", description = "댓글 목록 조회 성공",
+                    content =  @Content(array = @ArraySchema(schema = @Schema(implementation = CommentResponseDto.class))))
+    }, tags = "댓글 기능")
+    @GetMapping("/forums/{forumId}/comments")
+    public ResponseEntity<BaseResponseDto<List<CommentResponseDto>>> getCommentsOfForum(@PathVariable Long forumId) {
+
+        return new ResponseEntity<>(
+                new BaseResponseDto<List<CommentResponseDto>>(
+                        HttpStatus.OK.value(),
+                        "오픈포럼 댓글 조회 완료",
+                        commentService.getCommentsOfForum(forumId))
+                , HttpStatus.OK);
+    }
+
     @Operation(summary = "댓글 수정", description = "특정 댓글의 내용을 수정합니다.", responses = {
             @ApiResponse(responseCode = "200", description = "댓글 수정 성공, 댓글 정보 반환",
                     content = @Content(schema = @Schema(implementation = CommentResponseDto.class)))
     },tags = "댓글 기능")
     @PatchMapping("/comments/{commentId}")
     public ResponseEntity<BaseResponseDto<CommentResponseDto>> updateCommentById(@PathVariable Long commentId,
-                                                                                 @RequestBody String updateContent,
+                                                                                 @RequestBody CommentRequestDto updateContent,
                                                                                  Authentication authentication){
 
         return new ResponseEntity<>(

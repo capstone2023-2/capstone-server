@@ -38,7 +38,8 @@ public class SecurityConfig {
                 .authorizeRequests()
 //                .antMatchers("/swagger-ui/**", "/swagger-ui/index.html").permitAll()
                 .antMatchers("/api/v1/users/join", "/api/v1/users/login").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/v1/threads/**", "/api/v1/posts/**", "/api/v1/users/**", "/api/v1/collections/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/threads/**", "/api/v1/posts/**", "/api/v1/users/**",
+                        "/api/v1/collections/**", "/api/v1/forums/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

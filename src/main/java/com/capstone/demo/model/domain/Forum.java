@@ -1,5 +1,7 @@
 package com.capstone.demo.model.domain;
 
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "forums")
 @Getter
+@NoArgsConstructor
 public class Forum extends BaseTimeEntity {
 
     @Id
@@ -29,13 +33,16 @@ public class Forum extends BaseTimeEntity {
     @Column(nullable = false)
     private String content;
     private Integer bookmarkCount;
+    @OneToMany(mappedBy = "forum", cascade = CascadeType.REMOVE)
+    private List<Comment> comments;
 
     @Builder
-    private Forum(User author, String title, String content, Integer bookmarkCount){
+    private Forum(User author, String title, String content, Integer bookmarkCount, List<Comment> comments){
         this.author = author;
         this.title = title;
         this.content = content;
         this.bookmarkCount = bookmarkCount;
+        this.comments = comments;
     }
 
     public void update(String updateContent){

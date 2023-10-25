@@ -30,6 +30,7 @@ public class ForumService {
                 .title(forumRequestDto.getTitle())
                 .content(forumRequestDto.getContent())
                 .bookmarkCount(0)
+                .comments(new ArrayList<>())
                 .build();
 
         user.getForums().add(forum);

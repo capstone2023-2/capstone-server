@@ -3,6 +3,7 @@ package com.capstone.demo.service;
 import com.capstone.demo.exception.AppException;
 import com.capstone.demo.exception.ErrorCode;
 import com.capstone.demo.model.domain.Comment;
+import com.capstone.demo.model.domain.Forum;
 import com.capstone.demo.model.domain.Post;
 import com.capstone.demo.model.domain.User;
 import com.capstone.demo.model.dto.request.CommentRequestDto;
@@ -23,6 +24,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserService userService;
     private final PostService postService;
+    private final ForumService forumService;
 
     public CommentResponseDto createComment(CommentRequestDto commentRequestDto, Long postId, String email){
 
@@ -42,6 +44,24 @@ public class CommentService {
         return CommentResponseDto.of(comment);
     }
 
+    public CommentResponseDto createCommentOfForum(CommentRequestDto commentRequestDto, Long forumId, String email){
+
+        User user = userService.findByEmail(email);
+        Forum forum = forumService.findById(forumId);
+
+        Comment comment = Comment.builder()
+                .author(user)
+                .content(commentRequestDto.getContent())
+                .forum(forum)
+                .build();
+
+        user.getComments().add(comment);
+        forum.getComments().add(comment);
+        commentRepository.save(comment);
+
+        return CommentResponseDto.of(comment);
+    }
+
     public List<CommentResponseDto> getCommentsOfPost(Long postId){
 
         Post findPost = postService.findById(postId);
@@ -52,7 +72,21 @@ public class CommentService {
         return dtoList;
     }
 
-    public CommentResponseDto updateComment(Long commentId, String updateContent, String email){
+    public List<CommentResponseDto> getCommentsOfForum(Long forumId){
+
+        Forum forum = forumService.findById(forumId);
+        List<Comment> commentList = forum.getComments();
+        List<CommentResponseDto> dtoList = new ArrayList<>();
+
+
+        for(Comment e: commentList){
+            dtoList.add(CommentResponseDto.of(e));
+        }
+
+        return dtoList;
+    }
+
+    public CommentResponseDto updateComment(Long commentId, CommentRequestDto updateContent, String email){
 
         Comment comment = this.findById(commentId);
         User user = userService.findByEmail(email);
@@ -61,7 +95,8 @@ public class CommentService {
             throw new AppException(ErrorCode.UNAUTHORIZED_TRIAL, "댓글 작성자만 수정할 수 있습니다.");
         }
 
-        comment.update(updateContent);
+        comment.update(updateContent.getContent());
+        commentRepository.save(comment);
 
         return CommentResponseDto.of(comment);
     }
