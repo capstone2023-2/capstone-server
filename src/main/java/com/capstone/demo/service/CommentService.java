@@ -1,5 +1,7 @@
 package com.capstone.demo.service;
 
+import com.capstone.demo.exception.AppException;
+import com.capstone.demo.exception.ErrorCode;
 import com.capstone.demo.model.domain.Comment;
 import com.capstone.demo.model.domain.Post;
 import com.capstone.demo.model.domain.User;
@@ -50,9 +52,15 @@ public class CommentService {
         return dtoList;
     }
 
-    public CommentResponseDto updateComment(Long commentId, String updateContent){
+    public CommentResponseDto updateComment(Long commentId, String updateContent, String email){
 
         Comment comment = this.findById(commentId);
+        User user = userService.findByEmail(email);
+
+        if(!comment.getAuthor().equals(user)){
+            throw new AppException(ErrorCode.UNAUTHORIZED_TRIAL, "댓글 작성자만 수정할 수 있습니다.");
+        }
+
         comment.update(updateContent);
 
         return CommentResponseDto.of(comment);

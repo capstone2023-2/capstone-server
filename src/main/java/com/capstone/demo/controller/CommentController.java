@@ -68,13 +68,14 @@ public class CommentController {
     },tags = "댓글 기능")
     @PatchMapping("/comments/{commentId}")
     public ResponseEntity<BaseResponseDto<CommentResponseDto>> updateCommentById(@PathVariable Long commentId,
-                                                                                 @RequestBody String updateContent){
+                                                                                 @RequestBody String updateContent,
+                                                                                 Authentication authentication){
 
         return new ResponseEntity<>(
                 new BaseResponseDto(
                         HttpStatus.OK.value(),
                         "comment successfully updated",
-                        commentService.updateComment(commentId, updateContent)), HttpStatus.OK);
+                        commentService.updateComment(commentId, updateContent, authentication.getName())), HttpStatus.OK);
     }
 
     @Operation(summary = "댓글 삭제", description = "특정 댓글을 삭제합니다.", tags = "댓글 기능")
