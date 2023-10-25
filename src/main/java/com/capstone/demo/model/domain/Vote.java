@@ -2,6 +2,7 @@ package com.capstone.demo.model.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "votes")
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -26,4 +28,9 @@ public class Vote extends BaseTimeEntity {
     @Column(nullable = false)
     @Range(min = -1, max = 1)
     private int upOrDown;
+
+    public Vote update(int upOrDown){
+        this.upOrDown = upOrDown;
+        return this;
+    }
 }

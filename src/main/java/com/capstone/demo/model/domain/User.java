@@ -1,12 +1,21 @@
 package com.capstone.demo.model.domain;
 
-import lombok.AllArgsConstructor;
+import com.capstone.demo.model.SocialAccount;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -21,6 +30,8 @@ public class User extends BaseTimeEntity {
     private String email;
     @Column(nullable = false)
     private String username;
+    @Column(nullable = false)
+    private String password;
     @OneToMany(mappedBy = "author")
     private List<Post> posts;
     @OneToMany(mappedBy = "author")
@@ -31,52 +42,35 @@ public class User extends BaseTimeEntity {
     private List<Thread> threads;
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Collection> collections;
+    @Column
+    private SocialAccount socialAccount;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    @Column
-    private String provider;
-    @Column
-    private String providerId;
 
     @Builder
-    private User(String username, String email, List<Post> posts, List<Comment> comments,
-                 List<Vote> votes, List<Thread> threads, List<Collection> collections,
-                 String provider, String providerId) {
+    private User(String username, String email, String password, List<Post> posts, List<Comment> comments,
+                 List<Vote> votes, List<Thread> threads, List<Collection> collections, SocialAccount socialAccount) {
         this.username = username;
         this.email = email;
+        this.password = password;
         this.posts = posts;
         this.comments = comments;
         this.votes = votes;
         this.threads = threads;
         this.collections = collections;
+        this.socialAccount = socialAccount;
         this.role = UserRole.USER;
-        this.provider = provider;
-        this.providerId = providerId;
     }
 
-    public static User of(String username, String email, String provider, String providerId) {
+    public static User of(String username, String email) {
 
         return User.builder()
                 .username(username)
                 .email(email)
-                .provider(provider)
-                .providerId(providerId)
                 .build();
     }
 
-    public void updateProvider(String provider) {
-
-        this.provider = provider;
-    }
-
-    public User updateUsernameAndEmail(String username, String email){
-
-        this.username = username;
-        this.email = email;
-
-        return this;
-    }
 
     public String getRoleValue() {
 
