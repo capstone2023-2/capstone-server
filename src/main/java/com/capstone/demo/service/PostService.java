@@ -7,14 +7,13 @@ import com.capstone.demo.model.dto.request.PostRequestDto;
 import com.capstone.demo.model.dto.response.PostResponseDto;
 import com.capstone.demo.repository.BookmarkRepository;
 import com.capstone.demo.repository.PostRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -36,6 +35,7 @@ public class PostService {
                 .title(postRequestDto.getTitle())
                 .content(postRequestDto.getContent())
                 .views(0)
+                .bookmarkCount(0)
                 .comments(new ArrayList<>())
                 .votes(new ArrayList<>())
                 .build();

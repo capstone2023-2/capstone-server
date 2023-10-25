@@ -65,7 +65,7 @@ public class ThreadController {
     }, tags = "스레드 기능")
     @GetMapping("/collections/{collectionId}/threads/{threadId}")
     public ResponseEntity<BaseResponseDto<ThreadResponseDto>> getThread(@PathVariable Long collectionId,
-                                                     @PathVariable Long threadId){
+                                                                        @PathVariable Long threadId){
 
         return new ResponseEntity<>(
                 new BaseResponseDto(

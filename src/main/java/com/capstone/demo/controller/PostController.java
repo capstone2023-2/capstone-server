@@ -38,8 +38,8 @@ public class PostController {
     }, tags = "포스트 기능")
     @PostMapping("/threads/{threadId}/posts")
     public ResponseEntity<BaseResponseDto<PostResponseDto>> createPost(@RequestBody PostRequestDto postRequestDto,
-                                                      @PathVariable Long threadId,
-                                                      Authentication authentication){
+                                                                       @PathVariable Long threadId,
+                                                                       Authentication authentication){
 
         return new ResponseEntity<>(
                 new BaseResponseDto(

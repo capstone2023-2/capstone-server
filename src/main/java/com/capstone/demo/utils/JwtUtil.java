@@ -4,10 +4,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.crypto.SecretKey;
 import java.util.Date;
+import javax.crypto.SecretKey;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class JwtUtil {

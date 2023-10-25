@@ -15,10 +15,12 @@ import java.util.List;
 public class PostResponseDto {
 
     private Long postId;
+    private String username;
     private String title;
     private String content;
     private Long threadId;
-    private int views;
+    private Integer views;
+    private Integer bookmarkCount;
     private List<CommentResponseDto> comments;
     private Integer voteCount;
     private LocalDateTime createdAt;
@@ -30,10 +32,14 @@ public class PostResponseDto {
 
         return PostResponseDto.builder()
                 .postId(post.getPostId())
+                .username(post.getAuthor()
+                            .getUsername())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .threadId(post.getThread().getThreadId())
+                .threadId(post.getThread()
+                            .getThreadId())
                 .views(post.getViews())
+                .bookmarkCount(post.getBookmarkCount())
                 .comments(DtoConverter.convertCommentsToResponseDto(post.getComments()))
                 .voteCount(voteCount)
                 .createdAt(post.getCreatedAt())

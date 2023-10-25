@@ -32,9 +32,9 @@ public class UserService {
     public void join(UserRegisterDto userRegisterDto) {
 
         userRepository.findByEmail(userRegisterDto.getEmail())
-                        .ifPresent(user -> {
-                            throw new AppException(ErrorCode.EMAIL_DUPLICATED, "이미 존재하는 email입니다.");
-                        });
+                .ifPresent(user -> {
+                    throw new AppException(ErrorCode.EMAIL_DUPLICATED, "이미 존재하는 email입니다.");
+                });
 
         userRepository.findByUsername(userRegisterDto.getUsername())
                 .ifPresent(user -> {

@@ -34,12 +34,12 @@ public class CommentController {
 
     @Operation(summary = "포스트 댓글 작성", description = "특정 포스트에 댓글을 작성합니다.", responses = {
             @ApiResponse(responseCode = "201", description = "댓글 작성 성공, 댓글 정보 반환",
-            content = @Content(schema = @Schema(implementation = CommentResponseDto.class)))
+                    content = @Content(schema = @Schema(implementation = CommentResponseDto.class)))
     }, tags = "댓글 기능")
     @PostMapping("/posts/{postId}/comments")
     public ResponseEntity<BaseResponseDto<CommentResponseDto>> createComment(@RequestBody CommentRequestDto commentRequestDto,
-                                                         @PathVariable("postId") Long postId,
-                                                         Authentication authentication) {
+                                                                             @PathVariable("postId") Long postId,
+                                                                             Authentication authentication) {
 
         return new ResponseEntity<>(
                 new BaseResponseDto(
@@ -64,11 +64,11 @@ public class CommentController {
 
     @Operation(summary = "댓글 수정", description = "특정 댓글의 내용을 수정합니다.", responses = {
             @ApiResponse(responseCode = "200", description = "댓글 수정 성공, 댓글 정보 반환",
-            content = @Content(schema = @Schema(implementation = CommentResponseDto.class)))
+                    content = @Content(schema = @Schema(implementation = CommentResponseDto.class)))
     },tags = "댓글 기능")
     @PatchMapping("/comments/{commentId}")
     public ResponseEntity<BaseResponseDto<CommentResponseDto>> updateCommentById(@PathVariable Long commentId,
-                                                             @RequestBody String updateContent){
+                                                                                 @RequestBody String updateContent){
 
         return new ResponseEntity<>(
                 new BaseResponseDto(

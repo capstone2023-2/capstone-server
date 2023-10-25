@@ -29,9 +29,18 @@ public class Post extends BaseTimeEntity {
     private String title;
     @Column(nullable = false)
     private String content;
-    private int views;
+    private Integer views;
+    private Integer bookmarkCount;
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Comment> comments;
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Vote> votes;
+
+    public void addBookmark() {
+        bookmarkCount++;
+    }
+
+    public void removeBookmark() {
+        bookmarkCount--;
+    }
 }

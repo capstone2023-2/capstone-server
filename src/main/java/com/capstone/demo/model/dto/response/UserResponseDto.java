@@ -3,6 +3,7 @@ package com.capstone.demo.model.dto.response;
 import com.capstone.demo.model.SocialAccount;
 import com.capstone.demo.model.domain.User;
 import com.capstone.demo.utils.DtoConverter;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +19,7 @@ public class UserResponseDto {
     private List<CommentResponseDto> comments;
     private List<CollectionResponseDto> collections;
     private SocialAccount socialAccount;
+    private LocalDateTime createdAt;
 
     public static UserResponseDto of(User user){
         return UserResponseDto.builder()
@@ -28,6 +30,7 @@ public class UserResponseDto {
                 .comments(DtoConverter.convertCommentsToResponseDto(user.getComments()))
                 .collections(DtoConverter.convertCollectionsToResponseDto(user.getCollections()))
                 .socialAccount(user.getSocialAccount())
+                .createdAt(user.getCreatedAt())
                 .build();
     }
 

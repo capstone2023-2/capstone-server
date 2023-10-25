@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     List<Bookmark> findAllByUserId(Long userId);
-    int deleteByUserIdAndPostId(Long userId, Long postId);
-    int deleteAllByPostId(Long postId);
+    Integer deleteByUserIdAndPostId(Long userId, Long postId);
+    Integer deleteAllByPostId(Long postId);
 }

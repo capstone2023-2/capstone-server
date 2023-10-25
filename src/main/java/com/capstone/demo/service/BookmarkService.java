@@ -20,25 +20,30 @@ public class BookmarkService {
     private final PostService postService;
     private final UserService userService;
 
-    public boolean bookmarkPost(Long postId, String email){
+    public Boolean addBookmark(Long postId, String email){
 
         User user = userService.findByEmail(email);
+        Post post = postService.findById(postId);
 
         Bookmark bookmark = Bookmark.builder()
                 .postId(postId)
                 .userId(user.getUserId())
                 .build();
+
+        post.addBookmark();
         bookmarkRepository.save(bookmark);
 
         return true;
     }
 
     @Transactional
-    public boolean unbookmarkPost(Long postId, String email){
+    public Boolean removeBookmark(Long postId, String email){
 
         User user = userService.findByEmail(email);
+        Post post = postService.findById(postId);
 
-        int delete = bookmarkRepository.deleteByUserIdAndPostId(user.getUserId(), postId);
+        post.removeBookmark();
+        Integer delete = bookmarkRepository.deleteByUserIdAndPostId(user.getUserId(), postId);
         return delete == 1;
     }
 

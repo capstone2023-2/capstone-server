@@ -31,26 +31,26 @@ public class BookmarkController {
 
     @Operation(summary = "북마크에 포스트 추가", description = "사용자의 북마크에 특정 포스트를 추가합니다.", tags = "북마크 기능")
     @PostMapping("/{postId}")
-    public ResponseEntity<BaseResponseDto> bookmarkPost(@PathVariable Long postId,
-                                                        Authentication authentication){
+    public ResponseEntity<BaseResponseDto<Boolean>> addBookmark(@PathVariable Long postId,
+                                                                Authentication authentication){
 
         return new ResponseEntity<>(
                 new BaseResponseDto(
                         HttpStatus.OK.value(),
                         "post successfully bookmarked!",
-                        bookmarkService.bookmarkPost(postId, authentication.getName())), HttpStatus.OK);
+                        bookmarkService.addBookmark(postId, authentication.getName())), HttpStatus.OK);
     }
 
     @Operation(summary = "북마크에서 포스트 삭제", description = "사용자의 북마크에서 특정 포스트를 삭제합니다.", tags = "북마크 기능")
     @DeleteMapping("/{postId}")
-    public ResponseEntity<BaseResponseDto> unbookmarkPost(@PathVariable Long postId,
-                                                        Authentication authentication){
+    public ResponseEntity<BaseResponseDto<Boolean>> removeBookmark(@PathVariable Long postId,
+                                                                   Authentication authentication){
 
         return new ResponseEntity<>(
                 new BaseResponseDto(
                         HttpStatus.OK.value(),
                         "post successfully un-bookmarked!",
-                        bookmarkService.unbookmarkPost(postId, authentication.getName())), HttpStatus.OK);
+                        bookmarkService.removeBookmark(postId, authentication.getName())), HttpStatus.OK);
     }
 
     @Operation(summary = "북마크 불러오기", description = "사용자의 북마크 포스트들을 불러옵니다.", responses = {
