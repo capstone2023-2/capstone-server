@@ -1,5 +1,7 @@
 package com.capstone.demo.config.auth;
 
+import com.capstone.demo.config.CorsConfig;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,12 +14,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final String[] SWAGGER = {
             "/v3/api-docs",
             "/swagger-resources/**", "/configuration/security", "/webjars/**",
             "/swagger-ui.html", "/swagger/**", "/swagger-ui/**"};
+    private final CorsConfig corsConfig;
+
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().antMatchers(SWAGGER);
@@ -38,6 +43,7 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .addFilter(corsConfig.corsFilter())
                 .addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
