@@ -29,15 +29,16 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        http
+        httpSecurity
                 .httpBasic().disable()
                 .csrf().disable()
                 .cors().and()
                 .authorizeRequests()
+//                .antMatchers("/swagger-ui/**", "/swagger-ui/index.html").permitAll()
                 .antMatchers("/api/v1/users/join", "/api/v1/users/login").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/v1/threads/**", "/api/v1/posts/**", "/api/v1/users/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/threads/**", "/api/v1/posts/**", "/api/v1/users/**", "/api/v1/collections/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
@@ -46,6 +47,6 @@ public class SecurityConfig {
                 .addFilter(corsConfig.corsFilter())
                 .addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
+        return httpSecurity.build();
     }
 }

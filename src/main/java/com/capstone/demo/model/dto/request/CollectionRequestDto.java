@@ -6,5 +6,4 @@ import lombok.Getter;
 public class CollectionRequestDto {
 
     private String name;
-    private Long userId;
 }

@@ -19,20 +19,32 @@ public class CollectionService {
     private final UserService userService;
     private final ThreadService threadService;
 
-    public Boolean createCollection(CollectionRequestDto collectionRequestDto){
+    public CollectionResponseDto createCollection(CollectionRequestDto collectionRequestDto, String email){
 
-        User findUser = userService.findById(collectionRequestDto.getUserId());
+        User user = userService.findByEmail(email);
 
         Collection collection = Collection.builder()
-                .author(findUser)
+                .author(user)
                 .name(collectionRequestDto.getName())
                 .threads(new ArrayList<>())
                 .build();
 
-        findUser.getCollections().add(collection);
+        user.getCollections().add(collection);
         collectionRepository.save(collection);
 
-        return true;
+        return CollectionResponseDto.of(collection);
+    }
+
+    public List<CollectionResponseDto> getCollectionsOfUser(Long userId){
+
+        User user = userService.findById(userId);
+
+        List<Collection> entityList = user.getCollections();
+        List<CollectionResponseDto> dtoList = new ArrayList<>();
+
+        for(Collection e: entityList) dtoList.add(CollectionResponseDto.of(e));
+
+        return dtoList;
     }
 
     public List<CollectionResponseDto> getCollections(){
@@ -43,6 +55,13 @@ public class CollectionService {
         for (Collection e : entityList) dtoList.add(CollectionResponseDto.of(e));
 
         return dtoList;
+    }
+
+    public CollectionResponseDto getCollection(Long collectionId){
+
+        Collection collection = this.findById(collectionId);
+
+        return CollectionResponseDto.of(collection);
     }
 
     public Boolean deleteCollection(Long collectionId){

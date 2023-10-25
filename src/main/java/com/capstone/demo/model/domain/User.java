@@ -1,12 +1,21 @@
 package com.capstone.demo.model.domain;
 
-import lombok.AllArgsConstructor;
+import com.capstone.demo.model.SocialAccount;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -33,13 +42,15 @@ public class User extends BaseTimeEntity {
     private List<Thread> threads;
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Collection> collections;
+    @Column
+    private SocialAccount socialAccount;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
     @Builder
     private User(String username, String email, String password, List<Post> posts, List<Comment> comments,
-                 List<Vote> votes, List<Thread> threads, List<Collection> collections) {
+                 List<Vote> votes, List<Thread> threads, List<Collection> collections, SocialAccount socialAccount) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -48,6 +59,7 @@ public class User extends BaseTimeEntity {
         this.votes = votes;
         this.threads = threads;
         this.collections = collections;
+        this.socialAccount = socialAccount;
         this.role = UserRole.USER;
     }
 

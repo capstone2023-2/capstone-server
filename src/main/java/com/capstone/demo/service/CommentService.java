@@ -22,19 +22,19 @@ public class CommentService {
     private final UserService userService;
     private final PostService postService;
 
-    public CommentResponseDto createComment(CommentRequestDto commentRequestDto, Long postId){
+    public CommentResponseDto createComment(CommentRequestDto commentRequestDto, Long postId, String email){
 
-        User findUser = userService.findById(commentRequestDto.getUserId());
-        Post findPost = postService.findById(postId);
+        User user = userService.findByEmail(email);
+        Post post = postService.findById(postId);
 
         Comment comment = Comment.builder()
-                .author(findUser)
+                .author(user)
                 .content(commentRequestDto.getContent())
-                .post(findPost)
+                .post(post)
                 .build();
 
-        findUser.getComments().add(comment);
-        findPost.getComments().add(comment);
+        user.getComments().add(comment);
+        post.getComments().add(comment);
         commentRepository.save(comment);
 
         return CommentResponseDto.of(comment);
@@ -50,13 +50,21 @@ public class CommentService {
         return dtoList;
     }
 
-    public Boolean deleteComment(Long postId, Long commentId){
+    public CommentResponseDto updateComment(Long commentId, String updateContent){
 
-        Post findPost = postService.findById(postId);
-        Comment findComment = this.findById(commentId);
+        Comment comment = this.findById(commentId);
+        comment.update(updateContent);
 
-        findPost.getComments().remove(findComment);
-        commentRepository.delete(findComment);
+        return CommentResponseDto.of(comment);
+    }
+
+    public Boolean deleteComment(Long commentId){
+
+        Comment comment = this.findById(commentId);
+        Post post = comment.getPost();
+
+        post.getComments().remove(comment);
+        commentRepository.delete(comment);
 
         return true;
     }

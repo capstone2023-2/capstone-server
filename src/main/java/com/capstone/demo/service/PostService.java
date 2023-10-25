@@ -5,9 +5,11 @@ import com.capstone.demo.model.domain.Thread;
 import com.capstone.demo.model.domain.User;
 import com.capstone.demo.model.dto.request.PostRequestDto;
 import com.capstone.demo.model.dto.response.PostResponseDto;
+import com.capstone.demo.repository.BookmarkRepository;
 import com.capstone.demo.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +21,14 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final BookmarkRepository bookmarkRepository;
     private final UserService userService;
     private final ThreadService threadService;
 
-    public PostResponseDto createPost(PostRequestDto postRequestDto) {
+    public PostResponseDto createPost(PostRequestDto postRequestDto, Long threadId ,String email) {
 
-        User findUser = userService.findById(postRequestDto.getUserId());
-        Thread findThread = threadService.findById(postRequestDto.getThreadId());
+        User findUser = userService.findByEmail(email);
+        Thread findThread = threadService.findById(threadId);
 
         Post post = Post.builder()
                 .author(findUser)
@@ -44,6 +47,25 @@ public class PostService {
         return PostResponseDto.of(post);
     }
 
+    public List<PostResponseDto> getPostsOfThread(Long threadId){
+
+        Thread thread = threadService.findById(threadId);
+
+        List<Post> entityList = thread.getPosts();
+        List<PostResponseDto> dtoList = new ArrayList<>();
+
+        for(Post e: entityList) dtoList.add(PostResponseDto.of(e));
+
+        return dtoList;
+    }
+
+    public PostResponseDto getPost(Long postId){
+
+        Post post = this.findById(postId);
+
+        return PostResponseDto.of(post);
+    }
+
     public List<PostResponseDto> getPosts(){
 
         List<Post> entityList = postRepository.findAll();
@@ -54,17 +76,22 @@ public class PostService {
         return dtoList;
     }
 
-    public Boolean deletePost(Long postId){
+    @Transactional
+    public Boolean deletePost(Long postId, String email){
 
-        Post findPost = this.findById(postId);
-        User findUser = userService.findById(findPost.getAuthor().getUserId());
-        Thread findThread = threadService.findById(findPost.getThread().getThreadId());
+        Post post = this.findById(postId);
+        User user = userService.findByEmail(email);
+        Thread findThread = threadService.findById(post.getThread().getThreadId());
 
-        findUser.getPosts().remove(findPost);
-        findThread.getPosts().remove(findPost);
-        postRepository.delete(findPost);
+        if(user.getUserId().equals(post.getAuthor().getUserId())){
+            user.getPosts().remove(post);
+            findThread.getPosts().remove(post);
+            bookmarkRepository.deleteAllByPostId(postId);
+            postRepository.delete(post);
 
-        return true;
+            return true;
+        }
+        else    return false;
     }
 
     public Post findById(Long postId){
