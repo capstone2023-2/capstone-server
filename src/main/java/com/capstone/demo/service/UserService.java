@@ -46,6 +46,7 @@ public class UserService {
                 .username(userRegisterDto.getUsername())
                 .password(encoder.encode(userRegisterDto.getPassword()))
                 .posts(new ArrayList<>())
+                .forums(new ArrayList<>())
                 .comments(new ArrayList<>())
                 .collections(new ArrayList<>())
                 .socialAccount(new SocialAccount())
