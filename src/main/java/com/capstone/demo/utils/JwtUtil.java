@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtUtil {
 
     private static final SecretKey secret = Keys.hmacShaKeyFor(Keys.secretKeyFor(SignatureAlgorithm.HS256).getEncoded());
+    private static final Long ACCESS_TOKEN_EXPIRATION_MS = 1000 * 60 * 30L; // 30분
 
     public static String getEmail(String token){
         return Jwts.parserBuilder().setSigningKey(JwtUtil.getSecret()).build()
@@ -24,14 +25,14 @@ public class JwtUtil {
                 .parseClaimsJws(token).getBody().getExpiration().before(new Date());
     }
 
-    public static String createToken(String email, long expirationMs){
+    public static String createAccessToken(String email){
         Claims claims = Jwts.claims();
         claims.put("email", email);
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
+                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION_MS))
                 .signWith(secret, SignatureAlgorithm.HS256)
                 .compact();
     }

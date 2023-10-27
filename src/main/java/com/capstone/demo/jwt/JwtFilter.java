@@ -1,4 +1,4 @@
-package com.capstone.demo.config.auth;
+package com.capstone.demo.jwt;
 
 import com.capstone.demo.utils.JwtUtil;
 import java.io.IOException;

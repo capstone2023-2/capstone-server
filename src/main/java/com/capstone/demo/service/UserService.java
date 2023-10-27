@@ -26,8 +26,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
 
-    private Long expirationMs = 1000 * 60 * 30L;
-
 
     public void join(UserRegisterDto userRegisterDto) {
 
@@ -64,7 +62,7 @@ public class UserService {
             throw new AppException(ErrorCode.INVALID_PASSWORD, "잘못된 password를 입력하셨습니다.");
         }
 
-        return JwtUtil.createToken(user.getEmail(), expirationMs);
+        return JwtUtil.createAccessToken(user.getEmail());
     }
 
     public UserResponseDto getUser(Long id){

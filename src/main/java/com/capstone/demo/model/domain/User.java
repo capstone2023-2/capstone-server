@@ -47,7 +47,7 @@ public class User extends BaseTimeEntity {
     private SocialAccount socialAccount;
 
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private Role role;
 
     @Builder
     private User(String username, String email, String password, List<Post> posts, List<Forum> forums, List<Comment> comments,
@@ -62,7 +62,7 @@ public class User extends BaseTimeEntity {
         this.threads = threads;
         this.collections = collections;
         this.socialAccount = socialAccount;
-        this.role = UserRole.USER;
+        this.role = Role.USER;
     }
 
     public static User of(String username, String email) {
