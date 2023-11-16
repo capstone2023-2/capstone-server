@@ -8,11 +8,8 @@ import lombok.Getter;
 @Entity
 @Table(name = "javascript")
 @Getter
-public class Javascript {
+public class Javascript extends Problem {
 
     @Id
     private int id;
-    private String topic;
-    private String question;
-    private String answer;
 }

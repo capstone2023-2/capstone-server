@@ -8,11 +8,8 @@ import lombok.Getter;
 @Entity
 @Table(name = "data_structure")
 @Getter
-public class DataStructure {
+public class DataStructure extends Problem {
 
     @Id
     private int id;
-    private String topic;
-    private String question;
-    private String answer;
 }

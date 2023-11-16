@@ -8,11 +8,8 @@ import lombok.Getter;
 @Entity
 @Table(name = "operating_system")
 @Getter
-public class OperatingSystem {
+public class OperatingSystem extends Problem {
 
     @Id
     private int id;
-    private String topic;
-    private String question;
-    private String answer;
 }

@@ -8,11 +8,8 @@ import lombok.Getter;
 @Entity
 @Table(name = "database_problem")
 @Getter
-public class Database {
+public class Database extends Problem {
 
     @Id
     private int id;
-    private String topic;
-    private String question;
-    private String answer;
 }
