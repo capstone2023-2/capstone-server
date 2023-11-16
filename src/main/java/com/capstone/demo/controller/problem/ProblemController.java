@@ -68,7 +68,7 @@ public class ProblemController {
 
     @Operation(summary = "Spring 주제의 모든 문제 조회", description = "Spring 주제의 모든 문제들을 불러옵니다."
             , tags = "주제별 면접 문제 기능")
-    @GetMapping
+    @GetMapping("/spring")
     public ResponseEntity<?> getSpringProblems() {
         return ResponseEntity.ok(problemService.getSpringProblems());
     }
