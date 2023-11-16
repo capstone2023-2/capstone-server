@@ -1,10 +1,7 @@
 package com.capstone.demo.model.domain;
 
-import com.capstone.demo.model.SocialAccount;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -32,39 +29,22 @@ public class User extends BaseTimeEntity {
     private String username;
     @Column(nullable = false)
     private String password;
-    @OneToMany(mappedBy = "author")
-    private List<Post> posts;
-    @OneToMany(mappedBy = "author")
-    private List<Comment> comments;
-    @OneToMany(mappedBy = "voter")
-    private List<Vote> votes;
-    @OneToMany(mappedBy = "author")
-    private List<Thread> threads;
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
-    private List<Collection> collections;
-    @Column
-    private SocialAccount socialAccount;
+    @OneToMany
+    private List<UserAnswer> userAnswers;
 
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private Role role;
 
     @Builder
-    private User(String username, String email, String password, List<Post> posts, List<Comment> comments,
-                 List<Vote> votes, List<Thread> threads, List<Collection> collections, SocialAccount socialAccount) {
+    private User(String username, String email, String password, List<UserAnswer> userAnswers) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.posts = posts;
-        this.comments = comments;
-        this.votes = votes;
-        this.threads = threads;
-        this.collections = collections;
-        this.socialAccount = socialAccount;
-        this.role = UserRole.USER;
+        this.userAnswers = userAnswers;
+        this.role = Role.USER;
     }
 
     public static User of(String username, String email) {
-
         return User.builder()
                 .username(username)
                 .email(email)
@@ -73,7 +53,6 @@ public class User extends BaseTimeEntity {
 
 
     public String getRoleValue() {
-
         return this.getRole().getValue();
     }
 }

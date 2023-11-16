@@ -1,7 +1,6 @@
 package com.capstone.demo.controller;
 
 import com.capstone.demo.model.dto.request.LoginRequest;
-import com.capstone.demo.model.dto.request.SocialAccountDto;
 import com.capstone.demo.model.dto.request.UserRegisterDto;
 import com.capstone.demo.model.dto.response.BaseResponseDto;
 import com.capstone.demo.model.dto.response.UserResponseDto;
@@ -16,9 +15,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,7 +43,7 @@ public class UserController {
             @ApiResponse(description = "로그인 성공 -> 토큰 반환")
     }, tags = "사용자 기능")
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
 
         String token = userService.login(loginRequest);
         return ResponseEntity.ok().body(token);
@@ -59,7 +56,7 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = UserResponseDto.class)))
     }, tags = "사용자 기능")
     @GetMapping("/{id}")
-    public ResponseEntity<BaseResponseDto<UserResponseDto>> getUser(@PathVariable Long id){
+    public ResponseEntity<BaseResponseDto<UserResponseDto>> getUser(@PathVariable Long id) {
 
         return new ResponseEntity<>(
                 new BaseResponseDto(
@@ -76,7 +73,7 @@ public class UserController {
             )
     }, tags = "사용자 기능")
     @GetMapping
-    public ResponseEntity<BaseResponseDto<List<UserResponseDto>>> getUsers(){
+    public ResponseEntity<BaseResponseDto<List<UserResponseDto>>> getUsers() {
 
         return new ResponseEntity<>(
                 new BaseResponseDto(
@@ -85,22 +82,4 @@ public class UserController {
                         userService.getUsers()), HttpStatus.OK);
     }
 
-    @Operation(summary = "사용자 소셜 정보 수정", description = "자신의 소셜 계정 정보를 수정합니다.", responses = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "소셜 정보 수정 성공",
-                    content = @Content(schema = @Schema(implementation = UserResponseDto.class))
-            )
-    }, tags = "사용자 기능")
-    @PatchMapping("/{id}/edit/social")
-    public ResponseEntity<BaseResponseDto<UserResponseDto>> updateSocialAccount(@PathVariable Long id,
-                                                                                @RequestBody SocialAccountDto socialAccountDto,
-                                                                                Authentication authentication){
-
-        return new ResponseEntity<>(
-                new BaseResponseDto(
-                        HttpStatus.OK.value(),
-                        "user's social accounts info successfully edited!",
-                        userService.updateSocialAccount(id, socialAccountDto, authentication.getName())), HttpStatus.OK);
-    }
 }
