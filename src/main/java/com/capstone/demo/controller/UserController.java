@@ -81,5 +81,4 @@ public class UserController {
                         "all users data successfully received!",
                         userService.getUsers()), HttpStatus.OK);
     }
-
 }
