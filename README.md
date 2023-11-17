@@ -8,3 +8,7 @@
 ## Swagger
 
 <p align="center"><img src="https://github.com/capstone2023-2/capstone-server/blob/feature/topic/images/csessence-swagger.gif" width="70%"/></p>
+
+## 서비스 이용하러 가보기
+
+[CS-Essence](http://43.200.87.142/)
