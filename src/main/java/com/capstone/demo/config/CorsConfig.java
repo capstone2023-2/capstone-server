@@ -16,11 +16,14 @@ public class CorsConfig {
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:3002");
         config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("http://43.200.87.142");
+        config.addAllowedOrigin("http://43.200.87.142:3000");
+        config.addAllowedOrigin("http://43.200.87.142:3002");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.setMaxAge(1800L);
         config.addExposedHeader("Authorization");
-        source.registerCorsConfiguration("/**",config);
+        source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
 }
