@@ -38,29 +38,6 @@ public class SecurityConfig {
         return (web) -> web.ignoring().antMatchers(SWAGGER);
     }
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-//
-//        httpSecurity
-//                .httpBasic().disable()
-//                .csrf().disable()
-//                .cors().and()
-//                .authorizeRequests()
-////                .antMatchers("/swagger-ui/**", "/swagger-ui/index.html").permitAll()
-//                .antMatchers("/api/v1/users/join", "/api/v1/users/login").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/v1/threads/**", "/api/v1/posts/**", "/api/v1/users/**",
-//                        "/api/v1/collections/**", "/api/v1/forums/**").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .addFilter(corsConfig.corsFilter())
-//                .addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class);
-//
-//        return httpSecurity.build();
-//    }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
@@ -78,9 +55,9 @@ public class SecurityConfig {
                 .accessDeniedHandler(jwtAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/v1/users/join", "/api/v1/users/login", "/api/v1/auth/join", "/api/v1/auth/login", "/api/v1/auth/reissue").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/v1/threads/**", "/api/v1/posts/**", "/api/v1/users/**",
-                        "/api/v1/collections/**", "/api/v1/forums/**").permitAll()
+                .antMatchers("/api/v1/users/join", "/api/v1/users/login", "/api/v1/auth/join", "/api/v1/auth/login",
+                        "/api/v1/auth/reissue").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/users/**", "/api/v1/topics/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(corsConfig.corsFilter())
@@ -90,7 +67,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 }
