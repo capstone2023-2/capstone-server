@@ -29,7 +29,7 @@ public class User extends BaseTimeEntity {
     private String username;
     @Column(nullable = false)
     private String password;
-    @OneToMany
+    @OneToMany(mappedBy = "author")
     private List<UserAnswer> userAnswers;
 
     @Enumerated(EnumType.STRING)

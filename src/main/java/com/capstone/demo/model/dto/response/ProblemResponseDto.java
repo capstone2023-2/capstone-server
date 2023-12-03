@@ -1,12 +1,14 @@
-package com.capstone.demo.model.domain.problem;
+package com.capstone.demo.model.dto.response;
 
-import javax.persistence.MappedSuperclass;
+
+import lombok.Builder;
 import lombok.Getter;
 
-@MappedSuperclass
 @Getter
-public class Problem {
+@Builder
+public class ProblemResponseDto {
 
+    private Integer id;
     private String topic;
     private String question;
     private String answer;
