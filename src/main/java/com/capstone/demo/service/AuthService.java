@@ -3,7 +3,6 @@ package com.capstone.demo.service;
 import com.capstone.demo.exception.AppException;
 import com.capstone.demo.exception.ErrorCode;
 import com.capstone.demo.jwt.JwtProvider;
-import com.capstone.demo.model.SocialAccount;
 import com.capstone.demo.model.domain.User;
 import com.capstone.demo.model.dto.TokenDto;
 import com.capstone.demo.model.dto.request.LoginRequest;
@@ -36,7 +35,7 @@ public class AuthService {
     private final RedisService redisService;
     private final BCryptPasswordEncoder encoder;
 
-    public UserResponseDto join(UserRegisterDto userRegisterDto){
+    public UserResponseDto join(UserRegisterDto userRegisterDto) {
         userRepository.findByEmail(userRegisterDto.getEmail())
                 .ifPresent(user -> {
                     throw new AppException(ErrorCode.EMAIL_DUPLICATED, "이미 존재하는 email입니다.");
@@ -51,11 +50,7 @@ public class AuthService {
                 .email(userRegisterDto.getEmail())
                 .username(userRegisterDto.getUsername())
                 .password(encoder.encode(userRegisterDto.getPassword()))
-                .posts(new ArrayList<>())
-                .forums(new ArrayList<>())
-                .comments(new ArrayList<>())
-                .collections(new ArrayList<>())
-                .socialAccount(new SocialAccount())
+                .userAnswers(new ArrayList<>())
                 .build();
         userRepository.save(user);
 
@@ -63,7 +58,7 @@ public class AuthService {
     }
 
     @Transactional
-    public TokenDto login(LoginRequest loginRequest){
+    public TokenDto login(LoginRequest loginRequest) {
 
         UsernamePasswordAuthenticationToken authenticationToken = loginRequest.toAuthentication();
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
@@ -86,7 +81,8 @@ public class AuthService {
         }
 
         // 요청된 RT의 유효성 검사 & Redis에 저장되어 있는 RT와 같은지 비교
-        if(!jwtProvider.validateRefreshToken("RT:" + email, requestRefreshToken) || !refreshTokenInRedis.equals(requestRefreshToken)) {
+        if (!jwtProvider.validateRefreshToken("RT:" + email, requestRefreshToken) || !refreshTokenInRedis.equals(
+                requestRefreshToken)) {
             redisService.deleteValues("RT:" + email); // 탈취 가능성 -> 삭제
             return null; // -> 재로그인 요청
         }
@@ -123,7 +119,7 @@ public class AuthService {
     @Transactional
     public TokenDto generateToken(String email, String authorities) {
         // RT가 이미 있을 경우
-        if(redisService.getValues("RT:" + email) != null) {
+        if (redisService.getValues("RT:" + email) != null) {
             redisService.deleteValues("RT:" + email); // 삭제
         }
 
