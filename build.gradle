@@ -37,11 +37,13 @@ dependencies {
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation 'io.springfox:springfox-swagger-ui:3.0.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
-//    compileOnly 'org.flywaydb:flyway-mysql:9.16.0'
     implementation 'org.flywaydb:flyway-core:8.4.4'
     implementation 'org.flywaydb:flyway-mysql:8.4.4'
 
     implementation 'com.google.cloud:google-cloud-texttospeech:2.31.0'
+
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.68' // Use the latest version available
+
 }
 
 tasks.named('test') {
