@@ -1,7 +1,6 @@
 package com.capstone.demo.config.auth;
 
 import com.capstone.demo.jwt.JwtAuthenticationFilter;
-import com.capstone.demo.jwt.JwtFilter;
 import com.capstone.demo.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
