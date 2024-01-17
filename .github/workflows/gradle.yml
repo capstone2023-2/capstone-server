@@ -24,6 +24,9 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
+      - name: grant execute permission for gradlew
+        run: chmod +x gradlew
+
       - name: make application.properties and keystore
         run: |
           cd ./src/main/resources
