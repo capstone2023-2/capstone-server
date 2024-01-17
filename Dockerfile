@@ -15,12 +15,12 @@ RUN ./gradlew clean build -x test
 # Final Stage
 FROM openjdk:11-jre-slim
 ENV APP_HOME=/app
-ENV JAR_FILE=/app/build/libs/*.jar
+ENV JAR_FILE=/app/build/libs/demo-0.0.1-SNAPSHOT.jar
 
 WORKDIR $APP_HOME
 
-COPY --from=BUILD ${JAR_FILE} /app.jar
+COPY --from=BUILD ${JAR_FILE} app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=${active}", "-Duser.timezone=Asia/Seoul", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=${active}", "-Duser.timezone=Asia/Seoul", "app.jar"]
