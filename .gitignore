@@ -37,3 +37,7 @@ out/
 .vscode/
 
 src/main/resources/application.properties
+*.p12
+src/main/resources/*.p12
+src/main/java/com/capstone/tts/
+audio/
