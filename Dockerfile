@@ -1,23 +1,26 @@
 FROM gradle:7.2-jdk11 AS build
 
-WORKDIR /app
+ENV APP_HOME=/app
+WORKDIR $APP_HOME
 
-COPY . .
+COPY gradle $APP_HOME/gradle
+COPY build.gradle settings.gradle gradlew $APP_HOME/
+COPY src $APP_HOME/src
 
-RUN gradle clean build -x test
+USER root
+RUN chmod +x gradlew
 
-# Base Image 변경
+RUN ./gradlew clean build -x test
+
+# Final Stage
 FROM openjdk:11-jre-slim
+ENV APP_HOME=/app
+ENV JAR_FILE=/app/build/libs/*.jar
 
-ENV LC_ALL=C.UTF-8
+WORKDIR $APP_HOME
 
-ENV TZ=Asia/Seoul
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-WORKDIR /app
-
-COPY --from=build /app/build/libs/demo-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=BUILD ${JAR_FILE} /app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=${active}", "-Duser.timezone=Asia/Seoul", "/app.jar"]
