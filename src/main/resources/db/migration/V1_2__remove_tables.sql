@@ -1,9 +1,0 @@
--- Drop Tables
-DROP TABLE bookmarks;
-DROP TABLE collection_thread;
-DROP TABLE collections;
-DROP TABLE comments;
-DROP TABLE forums;
-DROP TABLE votes;
-DROP TABLE posts;
-DROP TABLE threads;
