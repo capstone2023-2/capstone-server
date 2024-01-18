@@ -24,6 +24,9 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
+      - name: Print current location
+        run: pwd
+
       - name: Build with Gradle
         run: |
           echo "${{ secrets.APPLICATION_PROPERTIES }}" | base64 --decode > ./src/main/resources/application.properties
