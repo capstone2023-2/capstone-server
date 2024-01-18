@@ -41,3 +41,4 @@ src/main/resources/application.properties
 src/main/resources/*.p12
 src/main/java/com/capstone/tts/
 audio/
+docker-compose.yml
