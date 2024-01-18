@@ -24,13 +24,9 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: Print current location
-        run: |
-          pwd
-          ls
-
       - name: Build with Gradle
         run: |
+          mkdir -p ./src/main/resources
           echo "${{ secrets.APPLICATION_PROPERTIES }}" | base64 --decode > ./src/main/resources/application.properties
           cat ./src/main/resources/application.properties
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./src/main/resources/keystore.p12
