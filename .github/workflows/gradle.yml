@@ -25,7 +25,9 @@ jobs:
           distribution: 'temurin'
 
       - name: Print current location
-        run: pwd
+        run: |
+          pwd
+          ls
 
       - name: Build with Gradle
         run: |
