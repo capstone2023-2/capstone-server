@@ -27,7 +27,7 @@ jobs:
       - name: Build with Gradle
         run: |
           echo ${{ secrets.APPLICATION_PROPERTIES }} | base64 --decode > ./src/main/resources/application.properties
-          cat ./src/main/resource/application.properties
+          cat ./src/main/resources/application.properties
           echo ${{ secrets.KEYSTORE }} | base64 --decode > ./src/main/resources/keystore.p12
           chmod +x ./gradlew
           ./gradlew clean build -x test
