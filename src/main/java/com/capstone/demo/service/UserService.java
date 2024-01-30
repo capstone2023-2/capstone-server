@@ -3,10 +3,10 @@ package com.capstone.demo.service;
 import com.capstone.demo.model.domain.User;
 import com.capstone.demo.model.dto.response.UserResponseDto;
 import com.capstone.demo.repository.UserRepository;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,13 +25,10 @@ public class UserService {
     public List<UserResponseDto> getUsers() {
 
         List<User> entityList = userRepository.findAll();
-        List<UserResponseDto> dtoList = new ArrayList<>();
 
-        for (User e : entityList) {
-            dtoList.add(UserResponseDto.of(e));
-        }
-
-        return dtoList;
+        return entityList.stream()
+                .map(UserResponseDto::of)
+                .collect(Collectors.toList());
     }
 
     public User findById(Long userId) {
