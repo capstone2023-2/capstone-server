@@ -66,13 +66,14 @@ class UserAnswerServiceTest {
         verify(userAnswerRepository)
                 .save(userAnswerArgumentCaptor.capture());
         UserAnswer capturedValue = userAnswerArgumentCaptor.getValue();
+        UserAnswerResponseDto expectedResponseDto = UserAnswerResponseDto.of(capturedValue);
 
         assertThat(user.getUserAnswers().size()).isEqualTo(3);
         assertThat(capturedValue.getAnswer()).isEqualTo(requestDto.getAnswer());
         assertThat(capturedValue.getAuthor()).isEqualTo(user);
         assertThat(capturedValue.getTopic()).isEqualTo(topic);
         assertThat(capturedValue.getQuestionId()).isEqualTo(questionId);
-        assertThat(actualResponseDto.getAnswer()).isEqualTo(requestDto.getAnswer());
+        assertThat(actualResponseDto.getAnswer()).isEqualTo(expectedResponseDto.getAnswer());
     }
 
     @DisplayName("It should return UserAnswer List of given question of User in dto type")
