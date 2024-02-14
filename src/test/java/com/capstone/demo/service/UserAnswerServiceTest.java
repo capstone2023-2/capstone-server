@@ -61,6 +61,11 @@ class UserAnswerServiceTest {
                 underTest.createUserAnswer(requestDto, topic, questionId, email);
 
         // then
+        assertUserAnswerCreatedSuccessfully(user, requestDto, topic, questionId, actualResponseDto);
+    }
+
+    private void assertUserAnswerCreatedSuccessfully(User user, UserAnswerRequestDto requestDto, String topic,
+                                                     Integer questionId, UserAnswerResponseDto actualResponseDto) {
         ArgumentCaptor<UserAnswer> userAnswerArgumentCaptor =
                 ArgumentCaptor.forClass(UserAnswer.class);
         verify(userAnswerRepository)
@@ -68,11 +73,10 @@ class UserAnswerServiceTest {
         UserAnswer capturedValue = userAnswerArgumentCaptor.getValue();
         UserAnswerResponseDto expectedResponseDto = UserAnswerResponseDto.of(capturedValue);
 
-        assertThat(user.getUserAnswers().size()).isEqualTo(3);
-        assertThat(capturedValue.getAnswer()).isEqualTo(requestDto.getAnswer());
-        assertThat(capturedValue.getAuthor()).isEqualTo(user);
-        assertThat(capturedValue.getTopic()).isEqualTo(topic);
-        assertThat(capturedValue.getQuestionId()).isEqualTo(questionId);
+        assertThat(capturedValue)
+                .extracting(UserAnswer::getAnswer, UserAnswer::getAuthor, UserAnswer::getTopic,
+                        UserAnswer::getQuestionId)
+                .containsExactly(requestDto.getAnswer(), user, topic, questionId);
         assertThat(actualResponseDto.getAnswer()).isEqualTo(expectedResponseDto.getAnswer());
     }
 

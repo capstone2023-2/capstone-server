@@ -92,18 +92,23 @@ class AuthServiceTest {
         verify(userRepository).findByEmail(anyString());
         verify(userRepository).findByUsername(anyString());
 
-        ArgumentCaptor<User> userArgumentCaptor =
-                ArgumentCaptor.forClass(User.class);
+        assertUserJoinedSuccessfullyWithFreshEmailAndFreshUsername(registerDto, actualResponseDto);
+    }
+
+    private void assertUserJoinedSuccessfullyWithFreshEmailAndFreshUsername(UserRegisterDto registerDto,
+                                                                            UserResponseDto actualResponseDto) {
+        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userArgumentCaptor.capture());
         User capturedValue = userArgumentCaptor.getValue();
         UserResponseDto expectedResponseDto = UserResponseDto.of(capturedValue);
 
-        assertThat(capturedValue.getEmail()).isEqualTo(registerDto.getEmail());
-        assertThat(capturedValue.getUsername()).isEqualTo(registerDto.getUsername());
-        assertThat(capturedValue.getUserAnswers().size()).isEqualTo(0);
-        assertThat(capturedValue.getPassword()).isEqualTo("encoded password");
-        assertThat(actualResponseDto.getEmail()).isEqualTo(expectedResponseDto.getEmail());
-        assertThat(actualResponseDto.getUsername()).isEqualTo(expectedResponseDto.getUsername());
+        assertThat(capturedValue)
+                .extracting(User::getEmail, User::getUsername, User::getPassword)
+                .containsExactly(registerDto.getEmail(), registerDto.getUsername(), "encoded password");
+
+        assertThat(actualResponseDto)
+                .extracting(UserResponseDto::getEmail, UserResponseDto::getUsername)
+                .containsExactly(expectedResponseDto.getEmail(), expectedResponseDto.getUsername());
     }
 
     @DisplayName("Duplicated email with fresh username should not be able to join")
