@@ -28,6 +28,8 @@ services:
       - "8080:8080"
     networks:
       - cs-essence
+    environment:
+      TZ: "Asia/Seoul"
     depends_on:
       - mariadb
       - redis
