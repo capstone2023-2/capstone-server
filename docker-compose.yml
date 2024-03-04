@@ -22,9 +22,7 @@ services:
 
   app:
     container_name: app
-    build:
-      context: ./
-      dockerfile: Dockerfile
+    image: flashkim/cs-essence
     restart: always
     ports:
       - "8080:8080"

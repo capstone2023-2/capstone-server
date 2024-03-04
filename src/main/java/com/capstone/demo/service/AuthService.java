@@ -46,6 +46,10 @@ public class AuthService {
                     throw new AppException(ErrorCode.USERNAME_DUPLICATED, "이미 존재하는 username입니다.");
                 });
 
+        if (!userRegisterDto.getPassword().equals(userRegisterDto.getCheckPassword())) {
+            throw new AppException(ErrorCode.PASSWORD_CHECK_FAILS, "비밀번호가 일치하지 않습니다.");
+        }
+
         User user = User.builder()
                 .email(userRegisterDto.getEmail())
                 .username(userRegisterDto.getUsername())

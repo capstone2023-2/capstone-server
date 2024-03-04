@@ -14,7 +14,7 @@ public class UserResponseDto {
     private String email;
     private String username;
     private Long userId;
-    private List<UserAnswerResponseDto> useranswers;
+    private List<UserAnswerResponseDto> userAnswers;
     private LocalDateTime createdAt;
 
     public static UserResponseDto of(User user) {
@@ -22,7 +22,7 @@ public class UserResponseDto {
                 .userId(user.getUserId())
                 .email(user.getEmail())
                 .username(user.getUsername())
-                .useranswers(user.getUserAnswers().stream()
+                .userAnswers(user.getUserAnswers().stream()
                         .map(UserAnswerResponseDto::of)
                         .collect(Collectors.toList()))
                 .createdAt(user.getCreatedAt())

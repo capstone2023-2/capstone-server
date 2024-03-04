@@ -1,8 +1,10 @@
 package com.capstone.demo.model.dto.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class UserRegisterDto {
 
     private String email;
